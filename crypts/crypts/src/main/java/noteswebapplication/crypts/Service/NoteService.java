@@ -35,5 +35,23 @@ public class NoteService {
     public Optional<Note> getNoteById(Long id) {
         return noteRepository.findById(id);
     }
+
+    // Update note
+    public Optional<Note> updateNote(Long id, NoteRequest request) {
+        return noteRepository.findById(id).map(note -> {
+            note.setTitle(request.getTitle());
+            note.setContent(request.getContent());
+            return noteRepository.save(note);
+        });
+    }
+
+    // Delete note
+    public boolean deleteNote(Long id) {
+        if (noteRepository.existsById(id)) {
+            noteRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
 }
 
