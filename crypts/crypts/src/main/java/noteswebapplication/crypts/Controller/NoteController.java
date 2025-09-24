@@ -54,7 +54,7 @@ public class NoteController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-     // ✏️ Update
+     // Update
     @PutMapping("/{id}")
     public ResponseEntity<Note> updateNote(
             @PathVariable Long id,
