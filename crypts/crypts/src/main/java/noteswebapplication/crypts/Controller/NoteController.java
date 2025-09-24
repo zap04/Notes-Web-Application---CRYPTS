@@ -53,5 +53,31 @@ public class NoteController {
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+     // ✏️ Update
+    @PutMapping("/{id}")
+    public ResponseEntity<Note> updateNote(
+            @PathVariable Long id,
+            @Valid @RequestBody NoteRequest request) {
+        return notes.findById(id)
+                .map(existingNote -> {
+                    existingNote.setTitle(request.getTitle());
+                    existingNote.setContent(request.getContent());
+                    Note updated = notes.save(existingNote);
+                    return ResponseEntity.ok(updated);
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    // Delete
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteNote(@PathVariable Long id) {
+    return notes.findById(id)
+            .map(note -> {
+                notes.delete(note); 
+                return ResponseEntity.noContent().build();
+            })
+            .orElseGet(() -> ResponseEntity.notFound().build());
+}
 }
 
