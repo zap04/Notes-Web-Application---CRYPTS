@@ -11,11 +11,13 @@ public class Note {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // title optional
     private String title;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
+
+    @Column(nullable = false)
+    private boolean pinned = false;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -38,7 +40,6 @@ public class Note {
         updatedAt = LocalDateTime.now();
     }
 
-    // getters & setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -48,8 +49,12 @@ public class Note {
     public String getContent() { return content; }
     public void setContent(String content) { this.content = content; }
 
+    public boolean isPinned() { return pinned; }
+    public void setPinned(boolean pinned) { this.pinned = pinned; }
+
     public LocalDateTime getCreatedAt() { return createdAt; }
     public LocalDateTime getUpdatedAt() { return updatedAt; }
 }
+
  
 

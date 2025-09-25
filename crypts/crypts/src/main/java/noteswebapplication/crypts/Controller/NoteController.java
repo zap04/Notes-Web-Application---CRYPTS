@@ -7,6 +7,7 @@ import noteswebapplication.crypts.Repository.NoteRepository;
 
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -24,20 +25,36 @@ public class NoteController {
     }
 
     // Create
-    @PostMapping("/create")
+    @PostMapping
+    @Transactional
     public ResponseEntity<Note> createNote(@Valid @RequestBody NoteRequest request) {
-        Note note = new Note();
-        note.setTitle(request.getTitle());
-        note.setContent(request.getContent());
+        try {
+            System.out.println("Creating note with request: " + request);
+            System.out.println("Title: " + request.getTitle());
+            System.out.println("Content: " + request.getContent());
+            
+            Note note = new Note();
+            note.setTitle(request.getTitle() != null ? request.getTitle() : "Untitled");
+            note.setContent(request.getContent() != null && !request.getContent().trim().isEmpty() ? request.getContent() : " ");
+            note.setPinned(request.getPinned() != null ? request.getPinned() : false);
 
-        Note saved = notes.save(note);
+            System.out.println("Note object created: " + note);
+            System.out.println("Attempting to save to database...");
+            
+            Note saved = notes.save(note);
+            System.out.println("Note saved successfully with ID: " + saved.getId());
 
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(saved.getId())
-                .toUri();
+            URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                    .path("/{id}")
+                    .buildAndExpand(saved.getId())
+                    .toUri();
 
-        return ResponseEntity.created(location).body(saved);
+            return ResponseEntity.created(location).body(saved);
+        } catch (Exception e) {
+            System.err.println("Error creating note: " + e.getClass().getSimpleName() + " - " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     // Read all
@@ -54,23 +71,26 @@ public class NoteController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-     // Update
     @PutMapping("/{id}")
+    @Transactional
     public ResponseEntity<Note> updateNote(
             @PathVariable Long id,
             @Valid @RequestBody NoteRequest request) {
         return notes.findById(id)
                 .map(existingNote -> {
-                    existingNote.setTitle(request.getTitle());
-                    existingNote.setContent(request.getContent());
+                    existingNote.setTitle(request.getTitle() != null ? request.getTitle() : "Untitled");
+                    existingNote.setContent(request.getContent() != null && !request.getContent().trim().isEmpty() ? request.getContent() : " ");
+                    if (request.getPinned() != null) {
+                        existingNote.setPinned(request.getPinned());
+                    }
                     Note updated = notes.save(existingNote);
                     return ResponseEntity.ok(updated);
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // Delete
     @DeleteMapping("/{id}")
+    @Transactional
     public ResponseEntity<Object> deleteNote(@PathVariable Long id) {
     return notes.findById(id)
             .map(note -> {
@@ -78,6 +98,31 @@ public class NoteController {
                 return ResponseEntity.noContent().build();
             })
             .orElseGet(() -> ResponseEntity.notFound().build());
-}
+    }
+
+    // Health check endpoint
+    @GetMapping("/health")
+    public ResponseEntity<String> health() {
+        return ResponseEntity.ok("Backend is running!");
+    }
+
+    // Database test endpoint
+    @GetMapping("/test-db")
+    public ResponseEntity<String> testDatabase() {
+        try {
+            long count = notes.count();
+            return ResponseEntity.ok("Database connection OK. Notes count: " + count);
+        } catch (Exception e) {
+            System.err.println("Database test error: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body("Database error: " + e.getMessage());
+        }
+    }
+
+    // Simple test endpoint
+    @GetMapping("/test")
+    public ResponseEntity<String> test() {
+        return ResponseEntity.ok("Controller is working!");
+    }
 }
 

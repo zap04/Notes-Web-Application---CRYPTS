@@ -1,14 +1,12 @@
 package noteswebapplication.crypts.dto;
 
-
-import jakarta.validation.constraints.NotBlank;
-
 public class NoteRequest {
 
     private String title;
 
-    @NotBlank(message = "content must not be blank")
     private String content;
+
+    private boolean pinned;
 
     public NoteRequest() {}
 
@@ -22,4 +20,12 @@ public class NoteRequest {
 
     public String getContent() { return content; }
     public void setContent(String content) { this.content = content; }
+
+    public Boolean getPinned() {
+        return pinned;
+    }
+    
+    public void setPinned(Boolean pinned) {
+        this.pinned = pinned;
+    }
 }

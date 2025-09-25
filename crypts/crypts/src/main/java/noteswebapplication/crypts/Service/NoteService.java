@@ -23,6 +23,7 @@ public class NoteService {
         Note note = new Note();
         note.setTitle(request.getTitle());
         note.setContent(request.getContent());
+        note.setPinned(request.getPinned() != null ? request.getPinned() : false);
         return noteRepository.save(note);
     }
 
@@ -39,8 +40,15 @@ public class NoteService {
     // Update note
     public Optional<Note> updateNote(Long id, NoteRequest request) {
         return noteRepository.findById(id).map(note -> {
-            note.setTitle(request.getTitle());
-            note.setContent(request.getContent());
+            if (request.getTitle() != null) {
+                note.setTitle(request.getTitle());
+            }
+            if (request.getContent() != null) {
+                note.setContent(request.getContent());
+            }
+            if (request.getPinned() != null) {
+                note.setPinned(request.getPinned());
+            }
             return noteRepository.save(note);
         });
     }
