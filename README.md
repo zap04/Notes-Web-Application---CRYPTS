@@ -38,10 +38,9 @@ Zafra, Jake Laurence Y.
 
 ## 🛠️ Tech Stack  
 
-- **Frontend**: React.js (with Tailwind CSS or Bootstrap)  
-- **Backend**: Node.js / Express.js  
-- **Database**: MongoDB (or your chosen DB)  
-- **Exporting**: Markdown file generator  
+- **Frontend**: React.js 
+- **Backend**: SpringBoot  
+- **Database**: MySQL  
 
 ---
 
