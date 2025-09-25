@@ -24,7 +24,7 @@ public class NoteController {
     }
 
     // Create
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<Note> createNote(@Valid @RequestBody NoteRequest request) {
         Note note = new Note();
         note.setTitle(request.getTitle());
