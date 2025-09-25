@@ -45,38 +45,24 @@ Zafra, Jake Laurence Y.
 
 ---
 
-## 📂 Project Structure  
-
-```bash
-notes-app/
-│── src/              # Application source code
-│   ├── components/   # UI components
-│   ├── pages/        # Main pages
-│   ├── utils/        # Helper functions (search, sort, export)
-│── public/           # Static assets
-│── README.md         # Project documentation
-│── package.json      # Dependencies and scripts
-
-```
-
 ⚡ Getting Started
 Follow these steps to set up the project locally:
 1. Clone the repository
 ```bash
 git clone https://github.com/your-username/notes-app.git
 cd notes-app
-2. Install dependencies
 ```
+2. Install dependencies
 ```bash
 npm install
-3. Run the application
 ```
+3. Run the application
 ```bash
 Copy code
-npm start
+npm run dev
 This will start the development server. You can view the app by opening http://localhost:3000 in your browser.
-4. Build for production
 ```
+4. Build for production
 ```bash
 Copy code
 npm run build
