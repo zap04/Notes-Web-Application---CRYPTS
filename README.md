@@ -3,11 +3,11 @@
 A lightweight and efficient **Notes Application** built to help users organize, manage, and share their notes with ease. This project provides essential note-taking functionality along with advanced features such as pinning, categorization, exporting, and sharing.  
 
 ## Group Members
-Ambos, Kenneth Jan T.
-Del Mar, Kiana Marquisa S. 
-Duterte, Terence John N.
-Perpetua, Van Woodroe
-Zafra, Jake Laurence Y.
+Ambos, Kenneth Jan T.  
+Del Mar, Kiana Marquisa S.  
+Duterte, Terence John N.  
+Perpetua, Van Woodroe  
+Zafra, Jake Laurence Y.  
 
 ---
 
